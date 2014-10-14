@@ -31,10 +31,8 @@ public class MainActivity extends Activity {
 		result 	= (TextView) 	findViewById(R.id.textView_result);
 		
 		products = new ArrayList<DummyProducts>();
-		DummyProducts product = new DummyProducts("Gerolsteiner Mineralwasser","4001513000620");
-		products.add(product);
-		product = new DummyProducts("Canada Dry - Ginger Ale","4260301520010");
-		products.add(product);
+		products.add(new DummyProducts("Gerolsteiner Mineralwasser","4001513000620"));
+		products.add(new DummyProducts("Canada Dry - Ginger Ale","4260301520010"));
 		
 		scan.setOnClickListener(new OnClickListener() {
 			
