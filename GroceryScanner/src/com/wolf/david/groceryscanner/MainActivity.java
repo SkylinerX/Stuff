@@ -1,7 +1,5 @@
 package com.wolf.david.groceryscanner;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -19,7 +19,9 @@ public class MainActivity extends Activity {
 	private Button scan;
 	private TextView type;
 	private TextView result;
-	private ArrayList<DummyProducts> products;
+	
+	private Button lookup;
+	private Button set;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +32,6 @@ public class MainActivity extends Activity {
 		type 	= (TextView) 	findViewById(R.id.textView_type);
 		result 	= (TextView) 	findViewById(R.id.textView_result);
 		
-		products = new ArrayList<DummyProducts>();
-		products.add(new DummyProducts("Gerolsteiner Mineralwasser","4001513000620"));
-		products.add(new DummyProducts("Canada Dry - Ginger Ale","4260301520010"));
-		
 		scan.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -41,6 +39,7 @@ public class MainActivity extends Activity {
 				scan();
 			}
 		});
+		
 	}
 	
 	public void scan(){
@@ -48,21 +47,30 @@ public class MainActivity extends Activity {
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
+		if(requestCode == 2){
+			
+			Toast.makeText(this, intent.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+			
+		}
 		IntentResult scan = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
 
 		if (scan!=null) {
 			type.setText(scan.getFormatName());
-			for(int i = 0; i<products.size();i++){
-				if(products.get(i).getBarcode().equals(scan.getContents())){
-					result.setText(products.get(i).getName());
-					break;
-				}
-				else{
-					//result.setText(scan.getContents());
-					result.setText("Barcode not in Database");
-				}
-			}
 			
+			MyDBHandler handler = new MyDBHandler(getBaseContext(), null, null, 1);
+			Product product = handler.findProductByBarcode(scan.getContents());
+			
+			if(product != null){
+				result.setText(product.getName());
+			}
+			else{
+				ProductNotInDBDialog dialog = new ProductNotInDBDialog(scan.getContents());
+	            dialog.show(getFragmentManager(), "");
+			}
+		}
+		else{
+			type.setText("Error while scanning, please try again");
 		}
    }
 
@@ -75,11 +83,10 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		if (id == R.id.action_view_database) {
+			Intent intent = new Intent(this,AllProductsActivity.class);
+			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

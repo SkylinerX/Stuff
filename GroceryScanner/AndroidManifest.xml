@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="19"
         android:targetSdkVersion="21" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +23,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddProductActivity"
+            android:label="@string/title_activity_add_product" >
+        </activity>
+        <activity
+            android:name=".AllProductsActivity"
+            android:label="@string/title_activity_all_products" >
         </activity>
     </application>
 
