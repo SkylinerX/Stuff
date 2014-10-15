@@ -20,9 +20,6 @@ public class MainActivity extends Activity {
 	private TextView type;
 	private TextView result;
 	
-	private Button lookup;
-	private Button set;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
