@@ -83,4 +83,16 @@ public class AddProductActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle state) {
+		state.putString("name", productNameTextView.getText().toString());
+		state.putString("size", packageSizeTextView.getText().toString());
+	}
+	
+	@Override
+	public void onRestoreInstanceState(Bundle state) {
+		productNameTextView.setText(state.getString("name"));
+		packageSizeTextView.setText(state.getString("size"));
+	}
 }

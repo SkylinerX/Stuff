@@ -6,7 +6,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class AllProductsActivity extends Activity {
 	
@@ -22,6 +26,16 @@ public class AllProductsActivity extends Activity {
 		productList = handler.getAllProducts();
 		AllProductsAdapter adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
 		listview.setAdapter(adapter);
+		
+//		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+//
+//			@Override
+//			public boolean onItemLongClick(AdapterView<?> parent, View view,
+//					int position, long id) {
+//				Toast.makeText(getBaseContext(),"hallo", Toast.LENGTH_SHORT).show();
+//				return false;
+//			}
+//		});
 		
 		
 	}
