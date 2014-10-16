@@ -64,6 +64,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
 		db.close();
 	}
 	
+	public void updateProductQuantity(Product product){
+		ContentValues values = new ContentValues();
+		values.put(COLUMN_QUANTITY, product.getQuantity()+1);
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(TABLE_PRODUCTS, values, COLUMN_ID + " =?", new String[] {String.valueOf(product.getId())});
+		db.close();
+	}
+	
 	public Product findProductByName(String productName){
 		String query = "Select * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + " = '" + productName + "'";
 		return findProductQuery(query);

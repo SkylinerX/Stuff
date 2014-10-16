@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
 			}
 			
 			if(product !=null){
+				handler.updateProductQuantity(product);
 			}
 //			if(product != null){
 //				result.setText(product.getName());
