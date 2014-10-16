@@ -8,8 +8,11 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_ok">Okay</string>
+    <string name="dialog_cancel">Okay</string>
     <string name="dialog_not_in_db_title">Product not in Database</string>
     <string name="dialog_not_in_db_message">Do you want to add this Product to the Database?</string>
+    <string name="dialog_remove_item_from_db_title">Delete item from Database</string>
+    <string name="dialog_remove_item_from_db_message">Do you want to remove the selected item from the Database?</string>
     <string name="title_activity_add_product">AddProductActivity</string>
     <string name="addProduct_name_hint">Product Name</string>
     <string name="addProduct_package_hint">Package Size</string>

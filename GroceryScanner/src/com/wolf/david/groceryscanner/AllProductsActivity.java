@@ -3,6 +3,9 @@ package com.wolf.david.groceryscanner;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 public class AllProductsActivity extends Activity {
 	
 	private ListView listview;
+	private AllProductsAdapter adapter;
 	private ArrayList<Product> productList;
 
 	@Override
@@ -22,22 +26,21 @@ public class AllProductsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_all_products);
 		listview = (ListView) findViewById(R.id.all_products_list);
-		MyDBHandler handler = new MyDBHandler(this, null, null, 1);
+		final MyDBHandler handler = new MyDBHandler(this, null, null, 1);
 		productList = handler.getAllProducts();
-		AllProductsAdapter adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
+		adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
 		listview.setAdapter(adapter);
 		
-//		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
-//
-//			@Override
-//			public boolean onItemLongClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				Toast.makeText(getBaseContext(),"hallo", Toast.LENGTH_SHORT).show();
-//				return false;
-//			}
-//		});
-		
-		
+		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				MyDialog dialog = new MyDialog(productList.get(position).getBarcode(),position,adapter);
+				dialog.show(getFragmentManager(), "");
+				return true;
+			}
+		});
 	}
 
 	@Override

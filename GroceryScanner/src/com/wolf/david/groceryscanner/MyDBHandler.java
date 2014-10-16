@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class MyDBHandler extends SQLiteOpenHelper{
 	
@@ -93,12 +94,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 	}
 	
 	public boolean deleteProductByName(String productName){
-		String query = "Select * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + " =  \"" + productName + "\"";
+		String query = "Select * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + " = '" + productName + "'";
 		return deleteProductQuery(query);
 	}
 	
 	public boolean deleteProductByBarcode(String barcode){
-		String query = "Select * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_PRODUCTNAME + " =  \"" + barcode + "\"";
+		String query = "Select * FROM " + TABLE_PRODUCTS + " WHERE " + COLUMN_BARCODE + " = '" + barcode + "'";
 		return deleteProductQuery(query);
 	}
 	
@@ -113,8 +114,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
 		Product product = new Product();
 		
 		if (cursor.moveToFirst()) {
+			cursor.moveToFirst();
 			product.setId(Integer.parseInt(cursor.getString(0)));
-			db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?",
+			db.delete(TABLE_PRODUCTS, COLUMN_ID + " =?",
 		            new String[] { String.valueOf(product.getId()) });
 			cursor.close();
 			result = true;

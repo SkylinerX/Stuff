@@ -30,7 +30,7 @@ public class AddProductActivity extends Activity {
 		barcodeEditText 	= (TextView) findViewById(R.id.addProduct_barcode);
 		sendButton 			= (Button) findViewById(R.id.addProduct_button_send);
 		
-		barcodeEditText.setText(getIntent().getExtras().getString(ProductNotInDBDialog.BARCODE));
+		barcodeEditText.setText(getIntent().getExtras().getString(MyDialog.BARCODE));
 		
 		sendButton.setOnClickListener(new OnClickListener() {
 			

@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 				result.setText(product.getName());
 			}
 			else{
-				ProductNotInDBDialog dialog = new ProductNotInDBDialog(scan.getContents());
+				MyDialog dialog = new MyDialog(scan.getContents());
 	            dialog.show(getFragmentManager(), "");
 			}
 		}
