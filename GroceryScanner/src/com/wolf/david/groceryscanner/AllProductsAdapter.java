@@ -33,12 +33,14 @@ public class AllProductsAdapter extends ArrayAdapter<Product>{
 		    TextView  name  	= (TextView)  v.findViewById(R.id.list_item_products_name);
 		    TextView  size  	= (TextView)  v.findViewById(R.id.list_item_products_package);
 		    TextView  barcode  	= (TextView)  v.findViewById(R.id.list_item_products_barcode);
+		    TextView  quantity  = (TextView)  v.findViewById(R.id.list_item_products_quantity);
 
 		    if(product != null){
 		    	id.setText(product.getId()+"");
 			    name.setText(product.getName());
 			    size.setText(product.getSize());
 			    barcode.setText(product.getBarcode());
+			    quantity.setText(product.getQuantity()+"");
 		    }  
         
 		return v;

@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class MyDBHandler extends SQLiteOpenHelper{
 	
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "productDB.db";
 	public static final String TABLE_PRODUCTS = "products";
 	
@@ -20,6 +20,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 	public static final String COLUMN_PRODUCTNAME = "name";
 	public static final String COLUMN_SIZE = "size";
 	public static final String COLUMN_BARCODE = "barcode";
+	public static final String COLUMN_QUANTITY = "quantity";
 	
 
 	public MyDBHandler(Context context, String name, CursorFactory factory,
@@ -38,12 +39,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
 				+ COLUMN_BARCODE + " TEXT"
 				+ ")";
 		db.execSQL(CREATE_PRODUCTS_TABLE);
+		db.execSQL("ALTER TABLE "+ TABLE_PRODUCTS+ " ADD COLUMN " + COLUMN_QUANTITY +" INTEGER DEFAULT 0");
 		
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+		
 		onCreate(db);
 		
 	}
@@ -53,6 +56,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 		values.put(COLUMN_PRODUCTNAME, product.getName());
 		values.put(COLUMN_SIZE, product.getSize());
 		values.put(COLUMN_BARCODE, product.getBarcode());
+		values.put(COLUMN_QUANTITY, product.getQuantity()+1);
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -84,6 +88,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 			product.setName(cursor.getString(1));
 			product.setSize(cursor.getString(2));
 			product.setBarcode(cursor.getString(3));
+			product.setQuantity(Integer.parseInt(cursor.getString(4)));
 			cursor.close();
 		} else {
 			product = null;
@@ -139,6 +144,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 	    	product.setName(cursor.getString(1));
 	    	product.setSize(cursor.getString(2));
 	    	product.setBarcode(cursor.getString(3));
+	    	product.setQuantity(Integer.parseInt(cursor.getString(4)));
 	    	productList.add(product);
 	    	cursor.moveToNext();
 	    }

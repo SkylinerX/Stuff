@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,24 +17,47 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends Activity {
 
-	private Button scan;
-	private TextView type;
-	private TextView result;
+//	private Button scan;
+//	private TextView type;
+//	private TextView result;
+	
+	private ImageView scanBarcode;
+	private ImageView shoppingList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main_dash);
 		
-		scan 	= (Button) 		findViewById(R.id.button_scan);
-		type 	= (TextView) 	findViewById(R.id.textView_type);
-		result 	= (TextView) 	findViewById(R.id.textView_result);
+//		scan 	= (Button) 		findViewById(R.id.button_scan);
+//		type 	= (TextView) 	findViewById(R.id.textView_type);
+//		result 	= (TextView) 	findViewById(R.id.textView_result);
+		scanBarcode = (ImageView) findViewById(R.id.dash_imageview_barcode);
+		shoppingList = (ImageView) findViewById(R.id.dash_imageview_shopping_cart);
 		
-		scan.setOnClickListener(new OnClickListener() {
+//		scan.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				scan();
+//			}
+//		});
+		
+		scanBarcode.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				scan();
+				
+			}
+		});
+		
+		shoppingList.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this,AllProductsActivity.class);
+				startActivity(intent);	
 			}
 		});
 		
@@ -45,29 +69,32 @@ public class MainActivity extends Activity {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
-		if(requestCode == 2){
-			
-			Toast.makeText(this, intent.getStringExtra("result"), Toast.LENGTH_SHORT).show();
-			
-		}
 		IntentResult scan = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
 
 		if (scan!=null) {
-			type.setText(scan.getFormatName());
+			//type.setText(scan.getFormatName());
 			
 			MyDBHandler handler = new MyDBHandler(getBaseContext(), null, null, 1);
 			Product product = handler.findProductByBarcode(scan.getContents());
 			
-			if(product != null){
-				result.setText(product.getName());
-			}
-			else{
+			if(scan.getContents() !=null && product == null){
 				MyDialog dialog = new MyDialog(scan.getContents());
 	            dialog.show(getFragmentManager(), "");
 			}
+			
+			if(product !=null){
+			}
+//			if(product != null){
+//				result.setText(product.getName());
+//			}
+//			else{
+//				MyDialog dialog = new MyDialog(scan.getContents());
+//	            dialog.show(getFragmentManager(), "");
+//			}
 		}
 		else{
-			type.setText("Error while scanning, please try again");
+			//type.setText("Error while scanning, please try again");
+			Toast.makeText(getBaseContext(), "Error while scanning, please try again", Toast.LENGTH_SHORT).show();
 		}
    }
 
@@ -89,15 +116,15 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@Override
-	public void onSaveInstanceState(Bundle state) {
-		state.putString("type", type.getText().toString());
-		state.putString("result", result.getText().toString());
-	}
-	
-	@Override
-	public void onRestoreInstanceState(Bundle state) {
-		type.setText(state.getString("type"));
-		result.setText(state.getString("result"));
-	}
+//	@Override
+//	public void onSaveInstanceState(Bundle state) {
+//		state.putString("type", type.getText().toString());
+//		state.putString("result", result.getText().toString());
+//	}
+//	
+//	@Override
+//	public void onRestoreInstanceState(Bundle state) {
+//		type.setText(state.getString("type"));
+//		result.setText(state.getString("result"));
+//	}
 }

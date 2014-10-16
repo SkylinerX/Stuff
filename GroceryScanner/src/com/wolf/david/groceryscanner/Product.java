@@ -6,6 +6,7 @@ public class Product {
 	private String name;
 	private String size;
 	private String barcode;
+	private int quantity;
 	
 	public Product(){
 		
@@ -17,11 +18,26 @@ public class Product {
 		this.barcode = barcode;
 	}
 	
+	public Product(String name, String size, String barcode, int quantity){
+		this.name = name;
+		this.size = size;
+		this.barcode = barcode;
+		this.quantity = quantity;
+	}
+
 	public Product(int id, String name, String size, String barcode){
 		this.id = id;
 		this.name = name;
 		this.size = size;
 		this.barcode = barcode;
+	}
+	
+	public Product(int id, String name, String size, String barcode, int quantity){
+		this.id = id;
+		this.name = name;
+		this.size = size;
+		this.barcode = barcode;
+		this.quantity = quantity;
 	}
 
 	public int getId() {
@@ -54,6 +70,14 @@ public class Product {
 
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
+	}
+	
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 }
