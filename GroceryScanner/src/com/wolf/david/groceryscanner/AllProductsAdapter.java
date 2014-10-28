@@ -40,7 +40,7 @@ public class AllProductsAdapter extends ArrayAdapter<Product>{
 			    name.setText(product.getName());
 			    size.setText(product.getSize());
 			    barcode.setText(product.getBarcode());
-			    quantity.setText(product.getQuantity()+"");
+			    quantity.setText(product.getQuantity()+"x");
 		    }  
         
 		return v;
