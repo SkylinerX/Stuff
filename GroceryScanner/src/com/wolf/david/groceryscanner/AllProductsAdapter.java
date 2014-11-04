@@ -28,6 +28,13 @@ public class AllProductsAdapter extends ArrayAdapter<Product>{
 	        	LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	            v = vi.inflate(R.layout.list_item_all_products, null);
 	        }
+			
+			// TODO FIXME
+//			if ( position % 2 == 0 ){
+//                convertView.setBackground(getContext().getResources().getDrawable(R.drawable.karo_repeat));
+//            }else{
+//                convertView.setBackgroundResource(0);
+//            }
 					
 		    TextView  id  		= (TextView)  v.findViewById(R.id.list_item_products_id);
 		    TextView  name  	= (TextView)  v.findViewById(R.id.list_item_products_name);
