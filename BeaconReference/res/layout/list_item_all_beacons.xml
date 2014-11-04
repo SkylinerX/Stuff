@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <TextView 
+        android:id="@+id/beacon_UUID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UUID: "/>
+    
+    <TextView 
+        android:id="@+id/beacon_major"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beacon_UUID"
+        android:text="Major"/>
+    
+    <TextView 
+        android:id="@+id/beacon_minor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/beacon_UUID"
+        android:text="Minor"/>
+    
+    <TextView 
+        android:id="@+id/beacon_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beacon_major"
+        android:text="distance"/>
+    
+    <TextView 
+        android:id="@+id/beacon_RSSI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beacon_distance"
+        android:text="RSSI"/>
+    
+   
+
+</RelativeLayout>

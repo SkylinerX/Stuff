@@ -1,0 +1,9 @@
+bin/*
+gen/*
+*.class
+.gradle
+local.properties
+app/*
+build/*
+/gen
+/bin
