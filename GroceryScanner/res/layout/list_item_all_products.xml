@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/karo_repeat"
     android:paddingBottom="14dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin_half"
+    android:paddingRight="@dimen/activity_horizontal_margin_half"
+    android:background="@drawable/karo_repeat"
     android:paddingTop="8dp">
     
     <TextView 
@@ -18,7 +18,17 @@
         android:textStyle="bold"
         android:text="ID"/>
     
+    <ImageView 
+        android:id="@+id/list_item_products_overflow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_overflow"
+        android:scaleType="center"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+    
     <LinearLayout 
+        android:id="@+id/list_item_products_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/list_item_products_id"
@@ -34,7 +44,10 @@
 		        android:id="@+id/list_item_products_name"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginRight="12dp"
+		        android:textSize="12sp"
+		        android:maxEms="8"
+		        android:maxLines="2"
+		        android:ellipsize="end"
 		        android:textStyle="bold"
 		        android:text="Name"/>
 	    
@@ -43,7 +56,12 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_toLeftOf="@+id/list_item_products_quantity"
-		        android:layout_marginRight="12dp"
+		        android:layout_marginRight="16dp"
+		        android:textSize="12sp"
+		        android:gravity="right"
+		        android:maxEms="3"
+		        android:maxLines="2"
+		        android:ellipsize="end"
 		        android:textStyle="bold"
 		        android:text="Size"/>
 	    	
@@ -52,7 +70,12 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentRight="true"
-		        android:layout_marginRight="12dp"
+		        android:layout_marginRight="36dp"
+		        android:textSize="12sp"
+		        android:gravity="right"
+		        android:maxEms="3"
+		        android:maxLines="1"
+		        android:ellipsize="end"
 		        android:textStyle="bold"
 		        android:text="Quantity"/>
 	    </RelativeLayout>
@@ -63,5 +86,7 @@
 	        android:layout_height="wrap_content"
 	        android:text="Barcode"/>
     </LinearLayout>
+    
+    
 
 </RelativeLayout>

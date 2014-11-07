@@ -34,7 +34,7 @@ public class AllProductsActivity extends Activity {
 		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
+			public boolean onItemLongClick(AdapterView<?> parent, View view, 
 					int position, long id) {
 				MyDialog dialog = new MyDialog(productList.get(position).getBarcode(),position,adapter);
 				dialog.show(getFragmentManager(), "");
