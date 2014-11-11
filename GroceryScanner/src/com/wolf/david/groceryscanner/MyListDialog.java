@@ -37,6 +37,7 @@ public class MyListDialog extends DialogFragment {
 					switch (which) {
 					case DELETE_ITEM:
 						mListener.onRemoveListItemClick(MyListDialog.this, position);
+						break;
 					case CHANGE_AMOUNT:
 						mListener.onChangeAmountClick(MyListDialog.this, position);
 						break;

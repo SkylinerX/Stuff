@@ -74,7 +74,7 @@ public class AllProductsAdapter extends ArrayAdapter<Product> {
 					
 					@Override
 					public void onClick(View arg0) {
-						MyListDialog dialog = new MyListDialog((int)arg0.getTag(R.string.POSITION_TAG));
+						MyListDialog dialog = new MyListDialog((Integer)arg0.getTag(R.string.POSITION_TAG));
 						dialog.show(((AllProductsActivity)context).getFragmentManager(), null);
 						
 					}
