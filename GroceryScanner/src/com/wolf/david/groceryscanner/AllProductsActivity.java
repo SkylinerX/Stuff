@@ -27,7 +27,7 @@ public class AllProductsActivity extends Activity implements MyListDialogListene
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_all_products);
 		listview = (ListView) findViewById(R.id.all_products_list);
-		final MyDBHandler handler = new MyDBHandler(this, null, null, 1);
+		MyDBHandler handler = new MyDBHandler(this, null, null, 1);
 		productList = handler.getAllProducts();
 		adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
 		listview.setAdapter(adapter);
@@ -74,12 +74,12 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 			if(scan.getContents() !=null && product == null){
 				MyDialog dialog = new MyDialog(scan.getContents());
 	            dialog.show(getFragmentManager(), "");
-	            adapter.notifyDataSetChanged();
+	            refreshList();
 			}
 			
 			if(product !=null){
 				handler.increaseProductQuantityByOne(product);
-				adapter.notifyDataSetChanged();
+				refreshList();
 			}
 //			if(product != null){
 //				result.setText(product.getName());
@@ -119,5 +119,13 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		handler.close();
 		adapter.notifyDataSetChanged();
 		
+	}
+	
+	public void refreshList(){
+		productList.clear();
+		MyDBHandler handler = new MyDBHandler(this, null, null, 1);
+		productList = handler.getAllProducts();
+		adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
+		adapter.notifyDataSetChanged();
 	}
 }
