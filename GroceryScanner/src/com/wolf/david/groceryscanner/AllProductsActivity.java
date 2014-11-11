@@ -2,20 +2,17 @@ package com.wolf.david.groceryscanner;
 
 import java.util.ArrayList;
 
+import com.wolf.david.groceryscanner.MyDialog.MyDialogListener;
+import com.wolf.david.groceryscanner.MyListDialog.MyListDialogListener;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
-public class AllProductsActivity extends Activity {
+public class AllProductsActivity extends Activity implements MyListDialogListener, MyDialogListener {
 	
 	private ListView listview;
 	private AllProductsAdapter adapter;
@@ -31,16 +28,6 @@ public class AllProductsActivity extends Activity {
 		adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
 		listview.setAdapter(adapter);
 		
-		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, 
-					int position, long id) {
-				MyDialog dialog = new MyDialog(productList.get(position).getBarcode(),position,adapter);
-				dialog.show(getFragmentManager(), "");
-				return true;
-			}
-		});
 	}
 
 	@Override
@@ -60,5 +47,31 @@ public class AllProductsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onChangeAmountClick(DialogFragment dialog,int position) {
+		MyDialog dialogs = new MyDialog(position);
+		dialogs.show(getFragmentManager(), "");
+		
+	}
+
+	@Override
+	public void onRemoveListItemClick(DialogFragment dialog, int position) {
+		MyDBHandler handler = new MyDBHandler(getBaseContext(),null,null,1);
+    	handler.deleteProductByBarcode(adapter.getItem(position).getBarcode());
+    	handler.close();
+ 	    adapter.remove(adapter.getItem(position));
+ 	    adapter.notifyDataSetChanged();
+ 	    
+	}
+
+	@Override
+	public void onAmountValue(DialogFragment dialog, int amount, int position) {
+		MyDBHandler handler = new MyDBHandler(getBaseContext(),null,null,1);
+		handler.changeProductQuantity(adapter.getItem(position), amount);
+		handler.close();
+		adapter.notifyDataSetChanged();
+		
 	}
 }

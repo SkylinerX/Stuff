@@ -1,6 +1,7 @@
 package com.wolf.david.groceryscanner;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,8 +15,9 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.wolf.david.groceryscanner.MyDialog.MyDialogListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements MyDialogListener{
 
 //	private Button scan;
 //	private TextView type;
@@ -83,7 +85,7 @@ public class MainActivity extends Activity {
 			}
 			
 			if(product !=null){
-				handler.updateProductQuantity(product);
+				handler.increaseProductQuantityByOne(product);
 			}
 //			if(product != null){
 //				result.setText(product.getName());
@@ -115,6 +117,12 @@ public class MainActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onAmountValue(DialogFragment dialog, int amount, int position) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //	@Override

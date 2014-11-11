@@ -64,9 +64,19 @@ public class MyDBHandler extends SQLiteOpenHelper{
 		db.close();
 	}
 	
-	public void updateProductQuantity(Product product){
+	public void increaseProductQuantityByOne(Product product){
 		ContentValues values = new ContentValues();
 		values.put(COLUMN_QUANTITY, product.getQuantity()+1);
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.update(TABLE_PRODUCTS, values, COLUMN_ID + " =?", new String[] {String.valueOf(product.getId())});
+		db.close();
+	}
+	
+	public void changeProductQuantity(Product product,int val){
+		ContentValues values = new ContentValues();
+		product.setQuantity(val);
+		values.put(COLUMN_QUANTITY, product.getQuantity());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.update(TABLE_PRODUCTS, values, COLUMN_ID + " =?", new String[] {String.valueOf(product.getId())});

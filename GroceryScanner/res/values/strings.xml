@@ -8,7 +8,9 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="dialog_ok">Okay</string>
-    <string name="dialog_cancel">Okay</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_overflow_title">Product Options</string>
+    <string name="dialog_change_amount_title">Change Amount</string>
     <string name="dialog_not_in_db_title">Product not in Database</string>
     <string name="dialog_not_in_db_message">Do you want to add this Product to the Database?</string>
     <string name="dialog_remove_item_from_db_title">Delete item from Database</string>
@@ -18,5 +20,8 @@
     <string name="addProduct_package_hint">Package Size</string>
     <string name="addProduct_button_send_text">Send</string>
     <string name="title_activity_all_products">AllProductsActivity</string>
+    
+    <string name="POSITION_TAG">position</string>
+    <string name="BARCODE_TAG">list</string>
 
 </resources>

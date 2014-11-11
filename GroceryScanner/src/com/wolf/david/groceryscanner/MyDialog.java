@@ -1,40 +1,44 @@
 package com.wolf.david.groceryscanner;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
 
 public class MyDialog extends DialogFragment {
 	
 	public static final String BARCODE = "barcode";
 	public static final int ADD_PRODUCT = 0;
-	public static final int DELETE_PRODUCT = 1;
-	public static final int DELETE_PRODUCT_OVERFLOW = 2;
+	public static final int CHANGE_AMOUNT = 1;
 	private String barcode;
 	private int position;
-	private AllProductsAdapter adapter;
 	private int type;
+	private NumberPicker myAmount;
+	
+	public interface MyDialogListener {
+        public void onAmountValue(DialogFragment dialog,int amount,int position);
+    }
+	
+	MyDialogListener mListener;
 	
 	public MyDialog(String barcode){
 		this.barcode = barcode;
 		type = ADD_PRODUCT;
 	}
 	
-//	public MyDialog(String barcode, int position){
-//		this.barcode = barcode;
-//		this.position = position;
-//		type = DELETE_PRODUCT_OVERFLOW;
-//	}
-	
-	public MyDialog(String barcode, int position, AllProductsAdapter adapter){
-		this.barcode = barcode;
-		this.adapter = adapter;
+	public MyDialog(int position){
 		this.position = position;
-		type = DELETE_PRODUCT;
+		type = CHANGE_AMOUNT;
 	}
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -43,53 +47,63 @@ public class MyDialog extends DialogFragment {
 		case ADD_PRODUCT:
 			builder.setTitle(R.string.dialog_not_in_db_title)
 	     	   .setMessage(R.string.dialog_not_in_db_message)
-	            .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+	            .setPositiveButton(R.string.dialog_yes, new OnClickListener() {
 	                public void onClick(DialogInterface dialog, int id) {
 	             	   Intent intent = new Intent(getActivity(),AddProductActivity.class);
 	             	   intent.putExtra(BARCODE,barcode);
 	             	   startActivityForResult(intent,2);
 	                }
 	            })
-	            .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+	            .setNegativeButton(R.string.dialog_no, new OnClickListener() {
 	                public void onClick(DialogInterface dialog, int id) {
 	                }
 	            });
 			break;
-		case DELETE_PRODUCT:
-			builder.setTitle(R.string.dialog_remove_item_from_db_title)
-	     	   .setMessage(R.string.dialog_remove_item_from_db_message)
-	            .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {
-	                	MyDBHandler handler = new MyDBHandler(getActivity().getBaseContext(),null,null,1);
-	                	handler.deleteProductByBarcode(barcode);
-	             	    adapter.remove(adapter.getItem(position));
-	             	    adapter.notifyDataSetChanged();
-	                }
-	            })
-	            .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-	                public void onClick(DialogInterface dialog, int id) {
-	                }
-	            });
+			
+		case CHANGE_AMOUNT:
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.dialog_number_picker, null);
+			builder.setView(view);
+			myAmount = (NumberPicker) view.findViewById(R.id.dialog_numberPicker);
+			myAmount.setMaxValue(50);
+			myAmount.setMinValue(1);
+			builder.setTitle(R.string.dialog_change_amount_title).setPositiveButton(R.string.dialog_ok, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						int amount = myAmount.getValue();
+						mListener.onAmountValue(MyDialog.this, amount, position);
+					}
+				})
+				.setNegativeButton(R.string.dialog_cancel, new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			
 			break;
-//		case DELETE_PRODUCT_OVERFLOW:
-//			builder.setTitle(R.string.dialog_remove_item_from_db_title)
-//	     	   .setMessage(R.string.dialog_remove_item_from_db_message)
-//	            .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-//	                public void onClick(DialogInterface dialog, int id) {
-//	                	MyDBHandler handler = new MyDBHandler(getActivity().getBaseContext(),null,null,1);
-//	                	handler.deleteProductByBarcode(barcode);
-//	             	    adapter.remove(adapter.getItem(position));
-//	             	    adapter.notifyDataSetChanged();
-//	                }
-//	            })
-//	            .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-//	                public void onClick(DialogInterface dialog, int id) {
-//	                }
-//	            });
-//			break;
+
 		default:
 			break;
 		}
         return builder.create();	
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // Verify that the host activity implements the callback interface
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mListener = (MyDialogListener) activity;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(activity.toString()
+                    + " must implement MyDialogListener");
+        }
     }
 }

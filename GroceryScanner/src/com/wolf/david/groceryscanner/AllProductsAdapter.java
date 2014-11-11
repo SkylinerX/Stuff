@@ -2,6 +2,9 @@ package com.wolf.david.groceryscanner;
 
 import java.util.ArrayList;
 
+import com.wolf.david.groceryscanner.MyListDialog.MyListDialogListener;
+
+import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,8 +15,9 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class AllProductsAdapter extends ArrayAdapter<Product>{
+public class AllProductsAdapter extends ArrayAdapter<Product> {
 	
 	private ArrayList<Product> list;
 	private Product product;
@@ -58,23 +62,23 @@ public class AllProductsAdapter extends ArrayAdapter<Product>{
 		    
 
 		    if(product != null){
-		    	//final int finalPos = position;
 		    	id.setText(product.getId()+"");
 			    name.setText(product.getName());
 			    size.setText(product.getSize());
 			    barcode.setText(product.getBarcode());
-			    quantity.setText(product.getQuantity()+1000+"x");
+			    quantity.setText(product.getQuantity()+"x");
+			    overflow.setTag(R.string.POSITION_TAG,position);
 			    
-//			    overflow.setOnClickListener(new OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View arg0) {
-//						MyDialog dialog = new MyDialog(product.getBarcode(),finalPos);
-//						dialog.show(context.getFragmentManager(), "");
-//						return true;
-//						
-//					}
-//				});
+			    
+			    overflow.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						MyListDialog dialog = new MyListDialog((int)arg0.getTag(R.string.POSITION_TAG));
+						dialog.show(((AllProductsActivity)context).getFragmentManager(), null);
+						
+					}
+				});
 		    }  
         
 		return v;
