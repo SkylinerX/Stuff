@@ -2,15 +2,19 @@ package com.wolf.david.groceryscanner;
 
 import java.util.ArrayList;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.wolf.david.groceryscanner.MyDialog.MyDialogListener;
 import com.wolf.david.groceryscanner.MyListDialog.MyListDialogListener;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class AllProductsActivity extends Activity implements MyListDialogListener, MyDialogListener {
 	
@@ -42,12 +46,54 @@ public class AllProductsActivity extends Activity implements MyListDialogListene
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (item.getItemId()) {
+		case R.id.action_scan:
+			(new IntentIntegrator(this)).initiateScan();
+			break;
+			
+		case R.id.action_settings:
+			
+			break;
+
+		default:
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
+		IntentResult scan = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
+
+		if (scan!=null) {
+			//type.setText(scan.getFormatName());
+			
+			MyDBHandler handler = new MyDBHandler(getBaseContext(), null, null, 1);
+			Product product = handler.findProductByBarcode(scan.getContents());
+			
+			if(scan.getContents() !=null && product == null){
+				MyDialog dialog = new MyDialog(scan.getContents());
+	            dialog.show(getFragmentManager(), "");
+	            adapter.notifyDataSetChanged();
+			}
+			
+			if(product !=null){
+				handler.increaseProductQuantityByOne(product);
+				adapter.notifyDataSetChanged();
+			}
+//			if(product != null){
+//				result.setText(product.getName());
+//			}
+//			else{
+//				MyDialog dialog = new MyDialog(scan.getContents());
+//	            dialog.show(getFragmentManager(), "");
+//			}
+		}
+		else{
+			//type.setText("Error while scanning, please try again");
+			Toast.makeText(getBaseContext(), "Error while scanning, please try again", Toast.LENGTH_SHORT).show();
+		}
+   }
 	
 	@Override
 	public void onChangeAmountClick(DialogFragment dialog,int position) {
