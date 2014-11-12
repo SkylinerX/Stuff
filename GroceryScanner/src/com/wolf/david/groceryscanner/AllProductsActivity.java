@@ -11,12 +11,15 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class AllProductsActivity extends Activity implements MyListDialogListener, MyDialogListener {
+	
+	public static final int ADD_PRODUCT_REQUEST = 2;
 	
 	private ListView listview;
 	private AllProductsAdapter adapter;
@@ -62,39 +65,57 @@ public class AllProductsActivity extends Activity implements MyListDialogListene
 	}
 	
 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		
-		IntentResult scan = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
+	
+	switch (requestCode) {
+	case IntentIntegrator.REQUEST_CODE:
+		if (resultCode==RESULT_OK) {
+			IntentResult scan = IntentIntegrator.parseActivityResult(requestCode,resultCode,intent);
 
-		if (scan!=null) {
-			//type.setText(scan.getFormatName());
-			
+			if (scan!=null) {
+				
+				MyDBHandler handler = new MyDBHandler(getBaseContext(), null, null, 1);
+				Product product = handler.findProductByBarcode(scan.getContents());
+				
+				if(scan.getContents() !=null && product == null){
+					MyDialog dialog = new MyDialog(scan.getContents());
+		            dialog.show(getFragmentManager(), "");
+				}
+				
+				if(product !=null){
+					handler.increaseProductQuantityByOne(product);
+					for(int i = 0; i < productList.size(); i++){
+						if(adapter.getItem(i).getId()==product.getId()){
+							adapter.getItem(i).setQuantity(product.getQuantity());
+						}
+					}
+					adapter.notifyDataSetChanged();		
+				}
+			}
+			else{
+				Toast.makeText(getBaseContext(), "Error while scanning, please try again", Toast.LENGTH_SHORT).show();
+			}
+		}
+		break;
+	case ADD_PRODUCT_REQUEST:
+		if(resultCode==RESULT_OK){
+			Log.d("RESULT",intent.getStringExtra("result"));
 			MyDBHandler handler = new MyDBHandler(getBaseContext(), null, null, 1);
-			Product product = handler.findProductByBarcode(scan.getContents());
-			
-			if(scan.getContents() !=null && product == null){
-				MyDialog dialog = new MyDialog(scan.getContents());
-	            dialog.show(getFragmentManager(), "");
-	            refreshList();
-			}
-			
-			if(product !=null){
-				handler.increaseProductQuantityByOne(product);
-				refreshList();
-			}
-//			if(product != null){
-//				result.setText(product.getName());
-//			}
-//			else{
-//				MyDialog dialog = new MyDialog(scan.getContents());
-//	            dialog.show(getFragmentManager(), "");
-//			}
+			Product product = handler.findProductByBarcode(intent.getStringExtra(MyDialog.BARCODE));
+			adapter.add(product);
+			adapter.notifyDataSetChanged();
 		}
 		else{
-			//type.setText("Error while scanning, please try again");
-			Toast.makeText(getBaseContext(), "Error while scanning, please try again", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getBaseContext(), intent.getStringExtra("result"), Toast.LENGTH_SHORT).show();
 		}
+		break;
+	default:
+		break;
+	}
+		
+		
    }
 	
+	//When change Amount Button is clicked this opens the Amount Dialog
 	@Override
 	public void onChangeAmountClick(DialogFragment dialog,int position) {
 		MyDialog dialogs = new MyDialog(position);
@@ -119,13 +140,5 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		handler.close();
 		adapter.notifyDataSetChanged();
 		
-	}
-	
-	public void refreshList(){
-		productList.clear();
-		MyDBHandler handler = new MyDBHandler(this, null, null, 1);
-		productList = handler.getAllProducts();
-		adapter = new AllProductsAdapter(this, R.layout.list_item_all_products, productList);
-		adapter.notifyDataSetChanged();
 	}
 }

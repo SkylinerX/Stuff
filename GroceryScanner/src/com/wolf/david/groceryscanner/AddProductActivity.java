@@ -50,7 +50,7 @@ public class AddProductActivity extends Activity {
 			    	   Intent returnIntent = new Intent();
 			    	   
 			    	   if(dbHandler.findProductByBarcode(barcodeEditText.getText().toString()) !=null){
-			    		   returnIntent.putExtra("result","Database Successfully Updated");
+			    		   returnIntent.putExtra(MyDialog.BARCODE, barcodeEditText.getText().toString());
 			    		   setResult(RESULT_OK,returnIntent);
 			    	   }
 			    	   else{

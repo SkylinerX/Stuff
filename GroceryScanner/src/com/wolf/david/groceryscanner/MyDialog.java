@@ -51,7 +51,7 @@ public class MyDialog extends DialogFragment {
 	                public void onClick(DialogInterface dialog, int id) {
 	             	   Intent intent = new Intent(getActivity(),AddProductActivity.class);
 	             	   intent.putExtra(BARCODE,barcode);
-	             	   startActivityForResult(intent,2);
+	             	   getActivity().startActivityForResult(intent,AllProductsActivity.ADD_PRODUCT_REQUEST);
 	                }
 	            })
 	            .setNegativeButton(R.string.dialog_no, new OnClickListener() {
@@ -83,8 +83,7 @@ public class MyDialog extends DialogFragment {
 						// TODO Auto-generated method stub
 						
 					}
-				});
-			
+				});		
 			break;
 
 		default:
