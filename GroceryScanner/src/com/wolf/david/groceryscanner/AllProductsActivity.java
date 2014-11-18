@@ -83,12 +83,14 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 				
 				if(product !=null){
 					handler.increaseProductQuantityByOne(product);
+					handler.close();
 					for(int i = 0; i < productList.size(); i++){
-						if(adapter.getItem(i).getId()==product.getId()){
-							adapter.getItem(i).setQuantity(product.getQuantity());
+						if(adapter.getItem(i).getBarcode().equals(product.getBarcode())){
+							//Quantity not Updated in Product Object
+							adapter.getItem(i).setQuantity(product.getQuantity()+1);
+							adapter.notifyDataSetChanged();	
 						}
-					}
-					adapter.notifyDataSetChanged();		
+					}	
 				}
 			}
 			else{
@@ -110,9 +112,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		break;
 	default:
 		break;
-	}
-		
-		
+	}	
    }
 	
 	//When change Amount Button is clicked this opens the Amount Dialog
@@ -138,6 +138,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		MyDBHandler handler = new MyDBHandler(getBaseContext(),null,null,1);
 		handler.changeProductQuantity(adapter.getItem(position), amount);
 		handler.close();
+		adapter.getItem(position).setQuantity(amount);
 		adapter.notifyDataSetChanged();
 		
 	}
